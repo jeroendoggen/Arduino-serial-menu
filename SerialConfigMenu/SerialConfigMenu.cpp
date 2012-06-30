@@ -22,7 +22,8 @@
 /// For more information: variable declaration, changelog,... see SerialConfigMenu.h
 /// </summary>
 
-#include <SerialConfigMenu.h>
+#include "SerialConfigMenu.h"
+#include "ascii.h"
 
 // Strings stored in Program memory
 prog_char s_MENU_LINE0[] PROGMEM = "+---------------------------+" ;   // re-use this line where needed 
@@ -30,12 +31,22 @@ prog_char s_MENU_LINE1[] PROGMEM = "| My Module: Configuration  |" ;
 prog_char s_MENU_LINE2[] PROGMEM = "|  1. Set Option 1          |" ; 
 prog_char s_MENU_LINE3[] PROGMEM = "|  2. Set Option 2          |" ; 
 prog_char s_MENU_LINE4[] PROGMEM = "|  3. Set Option 3          |" ; 
-prog_char s_MENU_LINE5[] PROGMEM = "|  3. Set Option 4          |" ; 
-prog_char s_MENU_LINE6[] PROGMEM = "|  3. Set Option 5          |" ; 
-prog_char s_MENU_LINE7[] PROGMEM = "|  3. Set Option 6          |" ; 
+prog_char s_MENU_LINE5[] PROGMEM = "|  4. Set Option 4          |" ; 
+prog_char s_MENU_LINE6[] PROGMEM = "|  5. Set Option 5          |" ; 
+prog_char s_MENU_LINE7[] PROGMEM = "|  6. Set Option 6          |" ; 
 prog_char s_MENU_LINE8[] PROGMEM = "|                           |" ; 
 prog_char s_MENU_LINE9[] PROGMEM = "|  Settings OK              |" ; 
 
+prog_char s_MENU_LINE10[] PROGMEM = "| You pressed 0             |" ;   // re-use this line where needed 
+prog_char s_MENU_LINE11[] PROGMEM = "| You pressed 1             |" ; 
+prog_char s_MENU_LINE12[] PROGMEM = "| You pressed 2             |"; 
+prog_char s_MENU_LINE13[] PROGMEM = "| You pressed 3             |" ; 
+prog_char s_MENU_LINE14[] PROGMEM = "| DEBUG1                    |" ; 
+prog_char s_MENU_LINE15[] PROGMEM = "|  4. Set Option x          |" ; 
+prog_char s_MENU_LINE16[] PROGMEM = "|  5. Set Option x          |" ; 
+prog_char s_MENU_LINE17[] PROGMEM = "|  6. Set Option x          |" ; 
+prog_char s_MENU_LINE18[] PROGMEM = "|  7. Set Option x          |" ; 
+prog_char s_MENU_LINE19[] PROGMEM = "|  Settings OK              |" ; 
 
 
 // String Table in Program space
@@ -52,6 +63,18 @@ PROGMEM const char *ConfigMenu_string_table[] =
   s_MENU_LINE7,
   s_MENU_LINE8,
   s_MENU_LINE9,
+
+  s_MENU_LINE10,
+  s_MENU_LINE11,
+  s_MENU_LINE12,
+  s_MENU_LINE13,
+  s_MENU_LINE14,
+  s_MENU_LINE15,
+  s_MENU_LINE16,
+  s_MENU_LINE17,
+  s_MENU_LINE18,
+  s_MENU_LINE19,  
+  
 };
 
 /// <summary>
@@ -75,6 +98,7 @@ void SerialConfigMenu::begin()
 void SerialConfigMenu::begin(long speed)
 {
 	Serial.begin(speed);
+	clearScreen();
 }
 
 /// <summary>
@@ -90,27 +114,48 @@ void SerialConfigMenu::show()
 /// </summary>
 void SerialConfigMenu::show(char name)
 {
-	if(name == 'd'){ 
-		printLine(MENU_HORIZONTAL_LINE);
-		printLine(MENU_TITLE);
-		printLine(MENU_HORIZONTAL_LINE);
+	// First three lines are always printed
+	printLine(MENU_HORIZONTAL_LINE);
+	printLine(MENU_TITLE);
+	printLine(MENU_HORIZONTAL_LINE);
+		
+	if(name == 'd'){ // print default menu
 		printLine(MENU_OPTION1);
 		printLine(MENU_OPTION2);
 		printLine(MENU_OPTION3);
 		printLine(MENU_OPTION4);
-		printLine(MENU_HORIZONTAL_LINE);
 	}
-	
-	if(name == 'e'){ 
-		printLine(MENU_HORIZONTAL_LINE);
-		printLine(MENU_TITLE);
-		printLine(MENU_HORIZONTAL_LINE);
+	if(name == 'e'){ //print empty menu
 		printLine(MENU_EMPTY);
 		printLine(MENU_EMPTY);
 		printLine(MENU_EMPTY);
 		printLine(MENU_EMPTY);
-		printLine(MENU_HORIZONTAL_LINE);
 	}
+	if(name == 's'){ // print text based on selection
+		
+		switch (_incomingByte) {
+		case ASCII_0:
+			printLine(MENU_SELECT_0);
+			break;
+		case ASCII_1:
+			printLine(MENU_SELECT_1);
+			break;
+		case ASCII_2:
+			printLine(MENU_SELECT_2);
+			break;
+		case ASCII_3:
+			printLine(MENU_SELECT_3);
+			break;
+		
+		default: 
+			printLine(MENU_EMPTY);
+		}
+		printLine(MENU_EMPTY);
+		printLine(MENU_EMPTY);
+		printLine(MENU_EMPTY);
+		
+	}
+	printLine(MENU_HORIZONTAL_LINE); // ending line at the end of the menu
 	goHome();
 }
 
@@ -148,4 +193,53 @@ void SerialConfigMenu::clearScreen()
 	Serial.write(27); // ESC
 	Serial.print("[2J"); // clear screen
 }
+
+/// <summary>
+/// Read a char from the serial port
+/// </summary>
+char SerialConfigMenu::readChar()
+{
+	if(Serial.available() > 0 ){
+		_incomingByte = Serial.read();
+		//show('s');
+	}
+	return _incomingByte;
+}
+
+/// <summary>
+/// Read a char from the serial port (blocking)
+/// </summary>
+char SerialConfigMenu::readCharBlocking()
+{
+	while(!Serial.available()) ;
+	return (readChar());
+}
+
+/// <summary>
+/// Read a line from the serial port (read until 'max length' reached or ENTER pressed)
+/// TODO this does not work correctly yet.
+/// </summary>
+void SerialConfigMenu::readLine()
+{
+	uint8_t positionCounter=0;
+
+	 do {
+		_incomingLine[positionCounter] = readCharBlocking();
+		positionCounter++;
+   } while (_incomingLine[positionCounter-1] != ASCII_ENTER && positionCounter < LINE_LENGTH);
+}
+
+/// <summary>
+/// Print a line of text
+/// </summary>
+void SerialConfigMenu::printLine()
+{
+	Serial.print("Line: ");
+	for(int i=0;i<LINE_LENGTH;i++){
+		Serial.print(_incomingLine[i]);
+	}
+	Serial.println(" ");
+}
+
+
 

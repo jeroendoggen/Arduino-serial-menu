@@ -1,10 +1,12 @@
-// SerialConfigMenu.h - Library to show a menu over the serial port
+// SerialConfigMenu.h - Library for configuration a menus over the serial port
 // Copyright 2012 Jeroen Doggen (jeroendoggen@gmail.com)
 // 
 // Version History:
 //   Version 0.1: Print a line, print a menu
+//   Version 0.2: Read a char & print it in the menu
+//   Version 0.3: Read a line & print it in the menu
 // Roadmap:
-//  Version 0.2: ??
+//  Version 0.4: ??
 // 
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -40,8 +42,16 @@ class SerialConfigMenu
 	void printLine(uint8_t line);
 	void goHome();
 	void clearScreen();
-
+	char readChar();
+	char readCharBlocking();
+	void readLine();
+	void printLine();
+	
   private:
 	char _buffer[TEXT_BUFFER_SIZE];		// Buffer to hold the line of text
+	char _incomingByte;
+	char _incomingLine[LINE_LENGTH];
+	
+	
 };
 #endif
