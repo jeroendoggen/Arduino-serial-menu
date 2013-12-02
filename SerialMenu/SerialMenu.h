@@ -1,37 +1,16 @@
-// SerialConfigMenu.h - Library for configuration a menus over the serial port
-// Copyright 2012 Jeroen Doggen (jeroendoggen@gmail.com)
-//
-// Version History:
-//   Version 0.1: Print a line, print a menu
-//   Version 0.2: Read a char & print it in the menu
-//   Version 0.3: Read a line & print it in the menu
-// Roadmap:
-//  Version 0.4: ??
-//
-// This library is free software; you can redistribute it and/or
-// modify it under the terms of the GNU Lesser General Public
-// License as published by the Free Software Foundation; either
-// version 2.1 of the License, or (at your option) any later version.
-//
-// This library is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-// Lesser General Public License for more details.
-//
-// You should have received a copy of the GNU Lesser General Public
-// License along with this library; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+// SerialMenu.h - Library for configuration a menus over the serial port
+// Copyright 2012-2013 Jeroen Doggen (jeroendoggen@gmail.com)
 
-#ifndef SerialConfigMenu_h
-#define SerialConfigMenu_h
+#ifndef SerialMenu_h
+#define SerialMenu_h
 
 #include <defines.h>
 #include <Arduino.h>
 
-class SerialConfigMenu
+class SerialMenu
 {
   public:
-    SerialConfigMenu ();                          // Constructor
+    SerialMenu ();                          // Constructor
 
     void begin ();                                // Begin using default serial speed: 115200
     void begin (long speed);                      // Begin using custom serial speed

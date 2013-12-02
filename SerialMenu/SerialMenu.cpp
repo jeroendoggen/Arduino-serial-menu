@@ -1,54 +1,39 @@
-// SerialConfigMenu.cpp - Library to show a menu over the serial port
-// Copyright 2012 Jeroen Doggen (jeroendoggen@gmail.com)
-//  For more information: variable declaration, changelog,... see SerialConfigMenu.h
-//
-// This library is free software; you can redistribute it and/or
-// modify it under the terms of the GNU Lesser General Public
-// License as published by the Free Software Foundation; either
-// version 2.1 of the License, or (at your option) any later version.
-//
-// This library is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-// Lesser General Public License for more details.
-//
-// You should have received a copy of the GNU Lesser General Public
-// License along with this library; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+// SerialMenu.h - Library for configuration a menus over the serial port
+// Copyright 2012-2013 Jeroen Doggen (jeroendoggen@gmail.com)
 
 /// <summary>
-/// SerialConfigMenu.cpp - Library to show a menu over the serial port
-/// For more information: variable declaration, changelog,... see SerialConfigMenu.h
+/// SerialMenu.cpp - Library to show a menu over the serial port
+/// For more information: variable declaration, changelog,... see SerialMenu.h
 /// </summary>
 
-#include "SerialConfigMenu.h"
+#include "SerialMenu.h"
 #include "ascii.h"
 
 // Strings stored in Program memory
-prog_char s_MENU_LINE0[] PROGMEM = "+---------------------------+";
-prog_char s_MENU_LINE1[] PROGMEM = "| My Module: Configuration  |";
-prog_char s_MENU_LINE2[] PROGMEM = "|  1. Set Option 1          |";
-prog_char s_MENU_LINE3[] PROGMEM = "|  2. Set Option 2          |";
-prog_char s_MENU_LINE4[] PROGMEM = "|  3. Set Option 3          |";
-prog_char s_MENU_LINE5[] PROGMEM = "|  4. Set Option 4          |";
-prog_char s_MENU_LINE6[] PROGMEM = "|  5. Set Option 5          |";
-prog_char s_MENU_LINE7[] PROGMEM = "|  6. Set Option 6          |";
-prog_char s_MENU_LINE8[] PROGMEM = "|                           |";
-prog_char s_MENU_LINE9[] PROGMEM = "|  Settings OK              |";
+const char s_MENU_LINE0[] PROGMEM = "+---------------------------+";
+const char s_MENU_LINE1[] PROGMEM = "| My Module: Configuration  |";
+const char s_MENU_LINE2[] PROGMEM = "|  1. Set Option 1          |";
+const char s_MENU_LINE3[] PROGMEM = "|  2. Set Option 2          |";
+const char s_MENU_LINE4[] PROGMEM = "|  3. Set Option 3          |";
+const char s_MENU_LINE5[] PROGMEM = "|  4. Set Option 4          |";
+const char s_MENU_LINE6[] PROGMEM = "|  5. Set Option 5          |";
+const char s_MENU_LINE7[] PROGMEM = "|  6. Set Option 6          |";
+const char s_MENU_LINE8[] PROGMEM = "|                           |";
+const char s_MENU_LINE9[] PROGMEM = "|  Settings OK              |";
 
-prog_char s_MENU_LINE10[] PROGMEM = "| You pressed 0             |";
-prog_char s_MENU_LINE11[] PROGMEM = "| You pressed 1             |";
-prog_char s_MENU_LINE12[] PROGMEM = "| You pressed 2             |";
-prog_char s_MENU_LINE13[] PROGMEM = "| You pressed 3             |";
-prog_char s_MENU_LINE14[] PROGMEM = "| DEBUG1                    |";
-prog_char s_MENU_LINE15[] PROGMEM = "|  Your text:               |";
-prog_char s_MENU_LINE16[] PROGMEM = "|  5. Set Option x          |";
-prog_char s_MENU_LINE17[] PROGMEM = "|  6. Set Option x          |";
-prog_char s_MENU_LINE18[] PROGMEM = "|  7. Set Option x          |";
-prog_char s_MENU_LINE19[] PROGMEM = "|  Settings OK              |";
+const char s_MENU_LINE10[] PROGMEM = "| You pressed 0             |";
+const char s_MENU_LINE11[] PROGMEM = "| You pressed 1             |";
+const char s_MENU_LINE12[] PROGMEM = "| You pressed 2             |";
+const char s_MENU_LINE13[] PROGMEM = "| You pressed 3             |";
+const char s_MENU_LINE14[] PROGMEM = "| DEBUG1                    |";
+const char s_MENU_LINE15[] PROGMEM = "|  Your text:               |";
+const char s_MENU_LINE16[] PROGMEM = "|  5. Set Option x          |";
+const char s_MENU_LINE17[] PROGMEM = "|  6. Set Option x          |";
+const char s_MENU_LINE18[] PROGMEM = "|  7. Set Option x          |";
+const char s_MENU_LINE19[] PROGMEM = "|  Settings OK              |";
 
 // String Table in Program space
-PROGMEM const char *ConfigMenu_string_table[] =
+const char * PROGMEM ConfigMenu_string_table[] =
 {
 // 0-based index, see list above.
   s_MENU_LINE0,
@@ -78,14 +63,14 @@ PROGMEM const char *ConfigMenu_string_table[] =
 /// <summary>
 /// Constructor
 /// </summary>
-SerialConfigMenu::SerialConfigMenu()
+SerialMenu::SerialMenu()
 {
 }
 
 /// <summary>
 /// Begin variables: default value for serial speed: 115200
 /// </summary>
-void SerialConfigMenu::begin()
+void SerialMenu::begin()
 {
   begin (115200);
 }
@@ -93,7 +78,7 @@ void SerialConfigMenu::begin()
 /// <summary>
 /// Begin using custom speed settings for the serial port
 /// </summary>
-void SerialConfigMenu::begin(long speed)
+void SerialMenu::begin(long speed)
 {
   Serial.begin(speed);
   clearScreen();
@@ -103,7 +88,7 @@ void SerialConfigMenu::begin(long speed)
 /// <summary>
 /// Show menu empty menu
 /// </summary>
-void SerialConfigMenu::show()
+void SerialMenu::show()
 {
   show('e');
 }
@@ -111,7 +96,7 @@ void SerialConfigMenu::show()
 /// <summary>
 /// Show menu: specify a menu name: d -> default, e -> empty
 /// </summary>
-void SerialConfigMenu::show(char name)
+void SerialMenu::show(char name)
 {
 // First three lines are always printed
   printLine(MENU_HORIZONTAL_LINE);
@@ -173,7 +158,7 @@ void SerialConfigMenu::show(char name)
 /// <summary>
 /// Print one line of text on the terminal window
 /// </summary>
-void SerialConfigMenu::printLine(uint8_t line)
+void SerialMenu::printLine(uint8_t line)
 {
   getLine(line);
   Serial.println(_buffer);
@@ -182,7 +167,7 @@ void SerialConfigMenu::printLine(uint8_t line)
 /// <summary>
 /// Get one line of text from the program memory and put it into the buffer
 /// </summary>
-void SerialConfigMenu::getLine(uint8_t stringIndex)
+void SerialMenu::getLine(uint8_t stringIndex)
 {
   strcpy_P(_buffer, (char*)pgm_read_word(&(ConfigMenu_string_table[stringIndex])));
 }
@@ -190,7 +175,7 @@ void SerialConfigMenu::getLine(uint8_t stringIndex)
 /// <summary>
 /// Place the cursor in the beginning of the serial window
 /// </summary>
-void SerialConfigMenu::goHome()
+void SerialMenu::goHome()
 {
   Serial.write(27);                               // ESC
   Serial.print("[H");                             // cursor to home
@@ -199,7 +184,7 @@ void SerialConfigMenu::goHome()
 /// <summary>
 /// Clear the serial port window
 /// </summary>
-void SerialConfigMenu::clearScreen()
+void SerialMenu::clearScreen()
 {
   Serial.write(27);                               // ESC
   Serial.print("[2J");                            // clear screen
@@ -208,7 +193,7 @@ void SerialConfigMenu::clearScreen()
 /// <summary>
 /// Read a char from the serial port
 /// </summary>
-char SerialConfigMenu::readChar()
+char SerialMenu::readChar()
 {
   if(Serial.available() > 0 )
   {
@@ -221,7 +206,7 @@ char SerialConfigMenu::readChar()
 /// <summary>
 /// Read a char from the serial port (blocking)
 /// </summary>
-char SerialConfigMenu::readCharBlocking()
+char SerialMenu::readCharBlocking()
 {
   while(!Serial.available()) ;
   return (readChar());
@@ -231,7 +216,7 @@ char SerialConfigMenu::readCharBlocking()
 /// Read a line from the serial port (read until 'max length' reached or ENTER pressed)
 /// TODO this does not work correctly yet.
 /// </summary>
-void SerialConfigMenu::readLine()
+void SerialMenu::readLine()
 {
   _lineLength=0;
 
@@ -245,7 +230,7 @@ void SerialConfigMenu::readLine()
 /// <summary>
 /// Print a line of text
 /// </summary>
-void SerialConfigMenu::printLine()
+void SerialMenu::printLine()
 {
   Serial.print("|  ");
   for(int i=0 ; i < _lineLength-1 ; i++)

@@ -1,5 +1,5 @@
-// SerialConfigMenu.ino - Demo application to show a configuration menu: default menu example
-// Copyright 2012 Jeroen Doggen (jeroendoggen@gmail.com)
+// SerialConfigMenu.h - Library for configuration a menus over the serial port
+// Copyright 2012-2013 Jeroen Doggen (jeroendoggen@gmail.com)
 //
 // Info:
 //      - All strings are stored in program memory to save RAM
@@ -7,8 +7,8 @@
 // Program flow:
 //      - Default menu is shown over the serial port
 
-#include <SerialConfigMenu.h>
-SerialConfigMenu Menu;
+#include <SerialMenu.h>
+SerialMenu Menu;
 
 void setup()
 {
