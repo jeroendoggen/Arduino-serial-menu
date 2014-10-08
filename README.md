@@ -1,4 +1,5 @@
 # Arduino Serial Menu
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/jeroendoggen/Arduino-serial-menu?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Arduino library to show configuration menus over the serial port
 
