@@ -33,7 +33,7 @@ const char s_MENU_LINE18[] PROGMEM = "|  7. Set Option x          |";
 const char s_MENU_LINE19[] PROGMEM = "|  Settings OK              |";
 
 // String Table in Program space
-const char * PROGMEM ConfigMenu_string_table[] =
+const char * const PROGMEM ConfigMenu_string_table[] =
 {
 // 0-based index, see list above.
   s_MENU_LINE0,
